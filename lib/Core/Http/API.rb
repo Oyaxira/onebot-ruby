@@ -24,6 +24,19 @@ module Onebot
         self
       end
 
+      # 获取群列表
+      #
+      # @return [Array]
+      def get_group_list
+        data = sendReq('get_group_list')
+        if data['status'] == 'ok'
+          @logger.log '群列表获取成功'
+        else
+          @logger.log '群列表获取失败', Logger::WARN
+        end
+        data['data']
+      end
+
       # 设置群名
       #
       # @param group_id [Number]
@@ -165,7 +178,7 @@ module Onebot
 
       private
 
-      def sendReq(action, params, url = @url)
+      def sendReq(action, params = {}, url = @url)
         url.path = '/' << action
         JSON.parse(Utils.httpPost(url, params.to_json))
       end
