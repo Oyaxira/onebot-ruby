@@ -38,10 +38,10 @@ module Onebot
       end
 
       def send_group_forward_msg group_id, msgs
-        data = sendReq('send_group_forward_msg', { group_id: group_id, message: msgs })
+        data = sendReq('send_group_forward_msg', { group_id: group_id.to_i, messages: msgs })
         if data['status'] == 'ok'
           message_id = data['data']['message_id']
-          @logger.log "发送至群 #{group_id} 的转发消息: #{msg} (#{message_id})"
+          @logger.log "发送至群 #{group_id} 的转发消息: #{msgs} (#{message_id})"
         else
           @logger.log '发送消息失败', Logger::WARN
         end
