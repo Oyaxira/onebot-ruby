@@ -37,6 +37,17 @@ module Onebot
         data['data']
       end
 
+      def send_group_forward_msg msgs
+        data = sendReq('send_group_forward_msg', { group_id:, message: msgs })
+        if data['status'] == 'ok'
+          message_id = data['data']['message_id']
+          @logger.log "发送至群 #{group_id} 的转发消息: #{msg} (#{message_id})"
+        else
+          @logger.log '发送消息失败', Logger::WARN
+        end
+        data['data']
+      end
+
       # 设置群名
       #
       # @param group_id [Number]
