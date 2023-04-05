@@ -37,6 +37,11 @@ module Onebot
         data['data']
       end
 
+      # 发送群组转发消息
+      #
+      # @param group_id [Number]
+      # @param msgs [Array]
+      # @return [Hash]
       def send_group_forward_msg group_id, msgs
         data = sendReq('send_group_forward_msg', { group_id: group_id.to_i, messages: msgs })
         if data['status'] == 'ok'
@@ -44,6 +49,20 @@ module Onebot
           @logger.log "发送至群 #{group_id} 的转发消息: #{msgs} (#{message_id})"
         else
           @logger.log '发送消息失败', Logger::WARN
+        end
+        data['data']
+      end
+
+      # 撤回消息
+      #
+      # @param msg_id [Number]
+      # @return [Hash]
+      def delete_msg msg_id
+        data = sendReq('delete_msg', { message_id: msg_id.to_i })
+        if data['status'] == 'ok'
+          @logger.log "撤回消息: #{msg_id} 成功"
+        else
+          @logger.log '撤回消息失败', Logger::WARN
         end
         data['data']
       end
