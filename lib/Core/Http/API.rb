@@ -142,6 +142,27 @@ module Onebot
         data['data']
       end
 
+      # 获取群聊消息
+      #
+      # @param msg [String]
+      # @param group_id [Number]
+      # @return [Hash]
+      def getGroupMessage(group_id, msg_id=nil)
+        params = {
+          group_id: group_id,
+        }
+        if msg_id
+          params[:message_seq] = msg_id
+        end
+        data = sendReq('get_group_msg_history', params)
+        if data['status'] == 'ok'
+          message_id = data['data']['message_id']
+          return data['data']['messages']
+        else
+          @logger.log '获取消息失败', Logger::WARN
+        end
+      end
+
       # 接受好友邀请
       #
       # @param flag [String]
